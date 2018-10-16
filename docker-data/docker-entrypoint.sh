@@ -13,9 +13,10 @@ if [ "$1" = 'redis-cluster' ]; then
       mkdir -p /redis-conf/${port}
       mkdir -p /redis-data/${port}
 
-      if [ -e /redis-data/${port}/nodes.conf ]; then
-        rm /redis-data/${port}/nodes.conf
-      fi
+      # do not remove cluster info, so no need to recreate cluster.
+      #if [ -e /redis-data/${port}/nodes.conf ]; then
+      #  rm /redis-data/${port}/nodes.conf
+      #fi
 
       if [ "$port" -lt "7006" ]; then
         PORT=${port} envsubst < /redis-conf/redis-cluster.tmpl > /redis-conf/${port}/redis.conf
@@ -48,7 +49,7 @@ if [ "$1" = 'redis-cluster' ]; then
       redis-sentinel /redis-conf/sentinel-7000.conf &
     done
 
-    tail -f /var/log/supervisor/redis*.log
+    #tail -f /var/log/supervisor/redis*.log
 else
   exec "$@"
 fi
