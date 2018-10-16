@@ -46,10 +46,10 @@ if [ "$1" = 'redis-cluster' ]; then
     echo "yes" | ruby /redis/src/redis-trib.rb create --replicas 1 ${IP}:7000 ${IP}:7001 ${IP}:7002 ${IP}:7003 ${IP}:7004 ${IP}:7005
 
     for port in 7000 7001 7002; do
-      redis-sentinel /redis-conf/sentinel-7000.conf &
+      redis-sentinel /redis-conf/sentinel-${port}.conf &
     done
 
-    #tail -f /var/log/supervisor/redis*.log
+    tail -f /var/log/supervisor/redis*.log
 else
   exec "$@"
 fi
